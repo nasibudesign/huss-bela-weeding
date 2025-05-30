@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wedding Invitation</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f4f4f4; text-align: center; }
+    .card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 id="guest-name">Chargement...</h2>
+    <p id="table-number"></p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    const scriptURL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?id=" + id;
+
+    fetch(scriptURL)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          document.getElementById("guest-name").textContent = "Invité introuvable";
+        } else {
+          document.getElementById("guest-name").textContent = `Bienvenue ${data.Name}`;
+          document.getElementById("table-number").textContent = `Table: ${data.Table}`;
+        }
+      })
+      .catch(err => {
+        document.getElementById("guest-name").textContent = "Erreur de chargement.";
+      });
+  </script>
+</body>
+</html>
