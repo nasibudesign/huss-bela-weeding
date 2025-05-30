@@ -18,7 +18,7 @@
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
-    const scriptURL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?id=" + id;
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzF3FXLEjyswonhIhrXT583d_pWWzm7ukyW0mB5S6vcciq-Tab-JFv6F8-345KgSIo8Zw/exec?id=" + id;
 
     fetch(scriptURL)
       .then(response => response.json())
