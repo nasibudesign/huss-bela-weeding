@@ -7,23 +7,86 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       padding: 2rem;
-      background: #f8f8f8;
       text-align: center;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(to bottom, #cfd8dc, #90a4ae);
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: repeating-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.4) 0%, transparent 50%) 0 0 / 200% 200%,
+                  repeating-radial-gradient(circle at 80% 30%, rgba(255,255,255,0.3) 0%, transparent 50%) 0 0 / 200% 200%,
+                  repeating-radial-gradient(circle at 50% 70%, rgba(255,255,255,0.2) 0%, transparent 50%) 0 0 / 200% 200%;
+      background-repeat: repeat;
+      background-size: 200% 200%;
+      animation: cloudScroll 60s linear infinite;
+      z-index: 0;
+    }
+
+    body::after {
+      animation-duration: 120s;
+      opacity: 0.5;
+    }
+
+    @keyframes cloudScroll {
+      0% {
+        background-position: 0% 0%;
+      }
+      100% {
+        background-position: 100% 100%;
+      }
     }
     .card {
-      background: #fff;
+      background: rgba(255, 255, 255, 0.85);
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      margin: auto;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .welcome {
+      font-size: 1.2rem;
+      color: #555;
+      margin-bottom: 0.5rem;
+    }
+    .guest-name {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      color: #1e3a8a;
+    }
+    .label {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+      color: #333;
+    }
+    .table-name {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #065f46;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2 id="guest-name">Chargement...</h2>
-    <p id="table-number"></p>
+    <div class="welcome">Bienvenue !</div>
+    <div id="guest-name" class="guest-name">Chargement...</div>
+    <div class="label">Votre table :</div>
+    <div id="table-number" class="table-name"></div>
   </div>
 
   <script>
@@ -37,13 +100,17 @@
       .then(data => {
         if (data.error) {
           document.getElementById("guest-name").textContent = "Invité introuvable";
+          document.getElementById("table-number").textContent = "";
+          document.querySelector(".label").style.display = "none";
         } else {
-          document.getElementById("guest-name").textContent = `Bienvenue ${data["Name Complet"]} !`;
-          document.getElementById("table-number").textContent = `Votre table : ${data["Nom Table"]}`;
+          document.getElementById("guest-name").textContent = data["Name Complet"];
+          document.getElementById("table-number").textContent = data["Nom Table"];
         }
       })
       .catch(err => {
         document.getElementById("guest-name").textContent = "Erreur de chargement.";
+        document.getElementById("table-number").textContent = "";
+        document.querySelector(".label").style.display = "none";
       });
   </script>
 </body>
